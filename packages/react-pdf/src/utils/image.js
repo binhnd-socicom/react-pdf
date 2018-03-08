@@ -3,14 +3,14 @@ import JPEG from './jpeg';
 const request = require('request');
 
 function getImage(body, extension) {
-  switch (extension.toLowerCase()) {
-    case 'jpg':
-    case 'jpeg':
-      return new JPEG(body);
-    case 'png':
+  try {
+    return new JPEG(body);
+  } catch (err) {
+    try {
       return new PNG(body);
-    default:
-      throw new Error(`Image type not supported: ${extension}`);
+    } catch (err) {
+      throw new Error('Image data incorrect');
+    }
   }
 }
 
